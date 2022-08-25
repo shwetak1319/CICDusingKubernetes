@@ -2,20 +2,22 @@ pipeline {
     agent any
 
     environment {
-        registry = "211223789150.dkr.ecr.us-east-2.amazonaws.com/my-python-repo"
+        registry = "267753450809.dkr.ecr.ap-south-1.amazonaws.com/myltirepo"
     }
     
     stages {
         stage('Checkout') {
             steps {
-                checkout([$class: 'GitSCM', branches: [[name: '*/master']], extensions: [], userRemoteConfigs: [[url: 'https://github.com/akannan1087/myPythonDockerRepo']]])
+                checkout([$class: 'GitSCM', branches: [[name: '*/main']], extensions: [], userRemoteConfigs: [[url: 'https://github.com/shwetak1319/CICDusingKubernetes.git']]])
             }
         }
     
         stage ("Build image") {
             steps {
                 script {
-                    docker.build registry
+                    //docker.build registry
+                    sh "docker build -t myltirepo ."
+                    sh "docker tag myltirepo:latest 267753450809.dkr.ecr.ap-south-1.amazonaws.com/myltirepo:latest"
                 }
             }
         }
@@ -23,8 +25,8 @@ pipeline {
         stage ("docker push") {
          steps {
              script {
-                sh "aws ecr get-login-password --region us-east-2 | docker login --username AWS --password-stdin 211223789150.dkr.ecr.us-east-2.amazonaws.com"
-                sh "docker push 211223789150.dkr.ecr.us-east-2.amazonaws.com/my-python-repo"
+                sh "aws ecr get-login-password --region ap-south-1 | docker login --username AWS --password-stdin 267753450809.dkr.ecr.ap-south-1.amazonaws.com"
+                sh "docker push 267753450809.dkr.ecr.ap-south-1.amazonaws.com/myltirepo:latest"
                  
              }
            }   
