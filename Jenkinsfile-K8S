@@ -11,6 +11,12 @@ pipeline {
                 checkout([$class: 'GitSCM', branches: [[name: '*/main']], extensions: [], userRemoteConfigs: [[url: 'https://github.com/shwetak1319/CICDusingKubernetes.git']]])
             }
         }
+        
+        stage('Build Jar') {
+            steps {
+                sh "mvn clean install"
+            }
+        }
     
         stage ("Build image") {
             steps {
