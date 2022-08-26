@@ -23,7 +23,7 @@ pipeline {
                 script {
                     //docker.build registry
                     sh "docker build -t myltirepo ."
-                    sh "docker tag myltirepo:latest 267753450809.dkr.ecr.ap-south-1.amazonaws.com/myltirepo:latest"
+                    sh "docker tag myltirepo:latest 267753450809.dkr.ecr.ap-south-1.amazonaws.com/myltirepo:0.0.${env.BUILD_NUMBER}"
                 }
             }
         }
@@ -32,7 +32,7 @@ pipeline {
          steps {
              script {
                 sh "aws ecr get-login-password --region ap-south-1 | docker login --username AWS --password-stdin 267753450809.dkr.ecr.ap-south-1.amazonaws.com"
-                sh "docker push 267753450809.dkr.ecr.ap-south-1.amazonaws.com/myltirepo:latest"
+                sh "docker push 267753450809.dkr.ecr.ap-south-1.amazonaws.com/myltirepo:0.0.${env.BUILD_NUMBER}"
                  
              }
            }   
@@ -41,6 +41,7 @@ pipeline {
         stage ("Kube Deploy") {
             steps {
                 withKubeConfig(caCertificate: '', clusterName: '', contextName: '', credentialsId: 'K8S', namespace: '', serverUrl: '') {
+                 sh "sed -i s/_BUILD_NUMBER_/${env.BUILD_NUMBER}/g eks-deploy-from-ecr.yaml"
                  sh "kubectl apply -f eks-deploy-from-ecr.yaml"
                 }
             }
