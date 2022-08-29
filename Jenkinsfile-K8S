@@ -2,7 +2,7 @@ pipeline {
     agent any
 
     environment {
-        registry = "267753450809.dkr.ecr.ap-south-1.amazonaws.com/myltirepo"
+        registry = "267753450809.dkr.ecr.ap-south-1.amazonaws.com/ltirepo"
     }
     
     stages {
@@ -22,8 +22,8 @@ pipeline {
             steps {
                 script {
                     //docker.build registry
-                    sh "docker build -t myltirepo ."
-                    sh "docker tag myltirepo:latest 267753450809.dkr.ecr.ap-south-1.amazonaws.com/myltirepo:0.0.${env.BUILD_NUMBER}"
+                    sh "docker build -t ltirepo ."
+                    sh "docker tag ltirepo:latest 267753450809.dkr.ecr.ap-south-1.amazonaws.com/ltirepo:0.0.${env.BUILD_NUMBER}"
                 }
             }
         }
@@ -32,7 +32,7 @@ pipeline {
          steps {
              script {
                 sh "aws ecr get-login-password --region ap-south-1 | docker login --username AWS --password-stdin 267753450809.dkr.ecr.ap-south-1.amazonaws.com"
-                sh "docker push 267753450809.dkr.ecr.ap-south-1.amazonaws.com/myltirepo:0.0.${env.BUILD_NUMBER}"
+                sh "docker push 267753450809.dkr.ecr.ap-south-1.amazonaws.com/ltirepo:0.0.${env.BUILD_NUMBER}"
                  
              }
            }   
