@@ -21,7 +21,6 @@ pipeline {
         stage ("Build image") {
             steps {
                 script {
-                    //docker.build registry
                     sh "docker build -t ltirepo ."
                     sh "docker tag ltirepo:latest registry:0.0.${env.BUILD_NUMBER}"
                 }
