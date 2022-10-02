@@ -1,0 +1,20 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: my-springboot-deployment
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: springboot-app
+  template:
+    metadata:
+      labels:
+        app: springboot-app
+    spec:
+      containers:
+      - name: my-springboot-app
+        image: 267753450809.dkr.ecr.ap-south-1.amazonaws.com/ltirepo:0.0._BUILD_NUMBER_
+        imagePullPolicy: Always
+        ports:
+        - containerPort: 8085
