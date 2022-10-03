@@ -28,12 +28,12 @@ pipeline {
         }
         
         stage ("docker push") {
-         steps {
-             script {
-                sh "aws ecr get-login-password --region ap-south-1 | docker login --username AWS --password-stdin 267753450809.dkr.ecr.ap-south-1.amazonaws.com"
-                sh "docker push ${env.registry}:0.0.${env.BUILD_NUMBER}" 
-             }
-           }   
+            steps {
+                script {
+                    sh "aws ecr get-login-password --region ap-south-1 | docker login --username AWS --password-stdin 267753450809.dkr.ecr.ap-south-1.amazonaws.com"
+                    sh "docker push ${env.registry}:0.0.${env.BUILD_NUMBER}" 
+                }
+            }   
         }
         
         stage ("Kube Deploy") {
