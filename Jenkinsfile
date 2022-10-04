@@ -37,10 +37,9 @@ pipeline {
         }
         stage ("Kube Deploy") {
             steps {
-                script{
-                    withKubeConfig(caCertificate: '', clusterName: '', contextName: '', credentialsId: 'eks', namespace: '', serverUrl: '') {
-                     //sh "sed -i s/_BUILD_NUMBER_/${env.BUILD_NUMBER}/g eks-deployment.yml"
-                     sh "kubectl apply -f eks-deployment.yml"
+                withKubeConfig(caCertificate: '', clusterName: '', contextName: '', credentialsId: 'eks', namespace: '', serverUrl: '') {
+                        sh "sed -i s/_BUILD_NUMBER_/${env.BUILD_NUMBER}/g eks-deployment.yml"
+                        sh "kubectl apply -f eks-deployment.yml"
                     }
                 }
             }
